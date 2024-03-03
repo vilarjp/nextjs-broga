@@ -6,8 +6,8 @@ import {
   UserIcon,
 } from "@/components/Icons";
 
-import { NavbarList } from "./NavBarList";
-import { NavbarListItem } from "./NavBarListItem";
+import { NavbarList } from "./NavbarList";
+import { NavbarListItem } from "./NavbarListItem";
 
 export const Navbar = () => {
   return (
