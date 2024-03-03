@@ -7,7 +7,7 @@ import {
 } from "@/components/Icons";
 
 import { NavbarList } from "./NavbarList";
-import { NavbarListItem } from "./NavbarListItem";
+import { NavbarListItemLink } from "./NavbarListItemLink";
 
 export const Navbar = () => {
   return (
@@ -20,25 +20,25 @@ export const Navbar = () => {
         />
       </div>
       <NavbarList className="flex-grow">
-        <NavbarListItem>
+        <NavbarListItemLink href="/">
           <HomeIcon className="w-4 h-4" />
           Home
-        </NavbarListItem>
-        <NavbarListItem>
+        </NavbarListItemLink>
+        <NavbarListItemLink href="/games">
           <GamepadIcon className="w-4 h-4" /> Games
-        </NavbarListItem>
-        <NavbarListItem>
+        </NavbarListItemLink>
+        <NavbarListItemLink href="/top-10">
           <AwardIcon className="w-4 h-4" />
           Top 10
-        </NavbarListItem>
-        <NavbarListItem>
+        </NavbarListItemLink>
+        <NavbarListItemLink href="/walkthroughs">
           <RouteIcon className="w-4 h-4" /> Walkthroughs
-        </NavbarListItem>
+        </NavbarListItemLink>
       </NavbarList>
       <NavbarList>
-        <NavbarListItem>
+        <NavbarListItemLink href="/user">
           <UserIcon className="w-4 h-4" /> User
-        </NavbarListItem>
+        </NavbarListItemLink>
       </NavbarList>
     </nav>
   );
