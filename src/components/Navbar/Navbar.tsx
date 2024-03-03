@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import {
   AwardIcon,
   GamepadIcon,
@@ -13,10 +15,12 @@ export const Navbar = () => {
   return (
     <nav className="flex h-screen flex-col bg-slate-900 border-r border-indigo-400/20 hover:border-indigo-400/40 w-72 p-2 text-slate-300">
       <div className="flex items-center justify-center my-4">
-        <img
+        <Image
           src="https://emersonbroga.com/e/assets/emersonbroga-logo-name-pink.png"
           alt="logo"
           className="w-auto h-12 p-2"
+          width={112}
+          height={32}
         />
       </div>
       <NavbarList className="flex-grow">
