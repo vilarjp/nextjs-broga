@@ -22,7 +22,7 @@ export default function RootLayout({
       <body
         className={classNameMerger(
           inter.className,
-          "flex gap-2 bg-slate-890 text-slate-300"
+          "bg-slate-890 text-slate-300"
         )}
       >
         <Navbar />
