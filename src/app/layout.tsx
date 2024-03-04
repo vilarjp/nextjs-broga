@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { Navbar } from "@/components/Navbar";
+import { classNameMerger } from "@/utils";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -18,7 +19,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} flex gap-2`}>
+      <body
+        className={classNameMerger(
+          inter.className,
+          "flex gap-2 bg-slate-890 text-slate-300"
+        )}
+      >
         <Navbar />
 
         {children}
