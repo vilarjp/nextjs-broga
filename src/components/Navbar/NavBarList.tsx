@@ -9,7 +9,7 @@ export const NavbarList = ({
   return (
     <ul
       className={classNameMerger(
-        "my-4 border-t border-indigo-400/20 hover:border-indigo-400/40",
+        "my-4 border-t border-indigo-400/20 hover:border-indigo-400/40 transition duration-300",
         className
       )}
     >
