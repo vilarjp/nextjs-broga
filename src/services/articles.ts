@@ -24,10 +24,20 @@ export default {
 
     const data = await Article.get({
       offset,
+      limit,
     });
+    const total = await Article.count({});
+    const totalPages = Math.ceil((total - HIGHLIGHT_ARTICLES_COUNT) / limit);
 
     return {
       data,
+      metadata: {
+        currentPage: page,
+        limit,
+        offset,
+        total,
+        totalPages,
+      },
     };
   },
   getHighlightArticles: async () => {

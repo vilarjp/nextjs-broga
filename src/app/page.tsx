@@ -1,8 +1,20 @@
-import ArticlesService from "@/services/articles";
 import Image from "next/image";
 
-export default async function Home() {
-  const { data: articles } = await ArticlesService.getHomeArticles();
+import { Pagination } from "@/components/Pagination";
+import ArticlesService from "@/services/articles";
+
+export default async function Home({
+  searchParams,
+}: {
+  searchParams?: { page?: string; limit?: string };
+}) {
+  const currentPage = Number(searchParams?.page) || 1;
+  const limit = Number(searchParams?.limit) || 10;
+  const { data: articles, metadata: pagination } =
+    await ArticlesService.getHomeArticles({
+      page: currentPage,
+      limit,
+    });
   const { data: highlights } = await ArticlesService.getHighlightArticles();
 
   return (
@@ -66,7 +78,10 @@ export default async function Home() {
                 </div>
               ))}
             </div>
-            <div>Pagination</div>
+            <Pagination
+              currentPage={pagination.currentPage}
+              totalPages={pagination.totalPages}
+            />
           </div>
           <div className="col-span-4 bg-emerald-500">B</div>
         </div>
