@@ -21,3 +21,34 @@ model Article {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model Genre {
+  id        Int         @id @default(autoincrement())
+  slug      String      @unique @default(uuid())
+  title     String
+  games     GameGenre[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model Game {
+  id        Int         @id @default(autoincrement())
+  slug      String      @unique @default(uuid())
+  title     String
+  year      Int
+  image     String
+  link      String
+  platform  String
+  genres    GameGenre[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model GameGenre {
+  game    Game  @relation(fields: [gameId], references: [id])
+  gameId  Int
+  genre   Genre @relation(fields: [genreId], references: [id])
+  genreId Int
+
+  @@id([gameId, genreId])
+}
