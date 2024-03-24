@@ -24,8 +24,6 @@ export default {
     const data = await Game.get({ limit, offset });
     const sorted = data.sort(() => (Math.random() > 0.5 ? 1 : -1));
 
-    return {
-      data: sorted,
-    };
+    return sorted;
   },
 };
