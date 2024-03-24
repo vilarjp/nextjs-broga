@@ -5,6 +5,7 @@ import { PageWrapper } from "@/components/PageWrapper";
 import { Pagination } from "@/components/Pagination";
 import ArticlesService from "@/services/articles";
 import GamesService from "@/services/games";
+import Link from "next/link";
 
 export default async function Home({
   searchParams,
@@ -18,8 +19,8 @@ export default async function Home({
       page: currentPage,
       limit,
     });
-  const { data: highlights } = await ArticlesService.getHighlightArticles();
-  const { data: randomGames } = await GamesService.getRandomGames({
+  const highlights = await ArticlesService.getHighlightArticles();
+  const randomGames = await GamesService.getRandomGames({
     limit: 40,
   });
 
@@ -32,8 +33,9 @@ export default async function Home({
 
         <div className="grid grid-cols-4 gap-4 h-[42vh]">
           {highlights.splice(-4).map((article) => (
-            <div
+            <Link
               key={article.id}
+              href={`/articles/${article.slug}`}
               className="flex-center relative overflow-hidden"
             >
               <div className="h-full w-full">
@@ -48,7 +50,7 @@ export default async function Home({
               <p className="absolute bottom-0 pt-6 pb-2 px-2 bg-gradient-to-t from-slate-900 via-slate-800 to-transparent w-full">
                 {article.title}
               </p>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
@@ -80,9 +82,12 @@ export default async function Home({
                       {article.title}
                     </h2>
                     <p className="flex-grow">{article.excerpt}</p>
-                    <button className="bg-slate-700 hover:bg-indigo-700 transition duration-300 rounded-lg px-4 py-2 inline max-w-max">
+                    <Link
+                      href={`/articles/${article.slug}`}
+                      className="bg-slate-700 hover:bg-indigo-700 transition duration-300 rounded-lg px-4 py-2 inline max-w-max"
+                    >
                       Ler mais
-                    </button>
+                    </Link>
                   </div>
                 </div>
               ))}
