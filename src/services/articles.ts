@@ -1,9 +1,7 @@
 import Article from "@/libs/database/articles";
+import { sleep } from "@/utils/sleep";
 
 const HIGHLIGHT_ARTICLES_COUNT = 4;
-
-const sleep = async () =>
-  new Promise((resolve) => setTimeout(resolve, Math.random() * 10000));
 
 export default {
   getHomeArticles: async ({ page = 1, limit = 10 } = {}) => {
