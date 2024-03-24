@@ -1,5 +1,5 @@
 import Game from "@/libs/database/games";
-import { sleep } from "@/utils/sleep";
+import { generateRandomIntArrayInRange, sleep } from "@/utils";
 
 export default {
   getGames: async ({ page = 1, limit = 10 } = {}) => {
@@ -23,11 +23,11 @@ export default {
   },
   getRandomGames: async ({ limit = 10 } = {}) => {
     const total = await Game.count({});
-    const offset = Math.max(0, Math.floor(Math.random() * total) - limit);
-    const data = await Game.get({ limit, offset });
-    const sorted = data.sort(() => (Math.random() > 0.5 ? 1 : -1));
+    const ids = generateRandomIntArrayInRange(total, limit);
+    const where = { id: { in: ids } };
+    const data = await Game.get({ where, limit });
 
-    return sorted;
+    return data;
   },
   getGameBySlug: async (slug: string) => {
     await sleep();

@@ -1,5 +1,5 @@
 import Article from "@/libs/database/articles";
-import { sleep } from "@/utils/sleep";
+import { sleep } from "@/utils";
 
 const HIGHLIGHT_ARTICLES_COUNT = 4;
 
