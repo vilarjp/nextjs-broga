@@ -1,7 +1,10 @@
 import Game from "@/libs/database/games";
+import { sleep } from "@/utils/sleep";
 
 export default {
   getGames: async ({ page = 1, limit = 10 } = {}) => {
+    await sleep();
+
     const offset = (page - 1) * limit;
     const data = await Game.get({ offset, limit });
     const total = await Game.count({});
@@ -27,6 +30,8 @@ export default {
     return sorted;
   },
   getGameBySlug: async (slug: string) => {
+    await sleep();
+
     const data = await Game.getOne({ where: { slug } });
 
     return data;
