@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import { PageWrapper } from "@/components/PageWrapper";
 import { Pagination } from "@/components/Pagination";
@@ -29,7 +30,7 @@ export default async function Games({
             key={game.id}
             className="flex-center flex-col relative overflow-hidden"
           >
-            <div className="h-full w-full">
+            <Link href={`/games/${game.slug}`} className="h-full w-full">
               <Image
                 className="h-full w-full object-cover transition duration-500 hover:scale-105"
                 src={`${generateGameImageUrl(game.image)}`}
@@ -37,7 +38,7 @@ export default async function Games({
                 width={600}
                 height={400}
               />
-            </div>
+            </Link>
             <p className="pt-6 pb-2 px-2 w-full">{game.title}</p>
           </div>
         ))}

@@ -26,4 +26,9 @@ export default {
 
     return sorted;
   },
+  getGameBySlug: async (slug: string) => {
+    const data = await Game.getOne({ where: { slug } });
+
+    return data;
+  },
 };
