@@ -1,5 +1,5 @@
 import { PageWrapper } from "@/components/PageWrapper";
-import { generateIntArray } from "@/utils/generateIntArray";
+import { generateIntArray } from "@/utils";
 
 export default function GamesLoading() {
   return (

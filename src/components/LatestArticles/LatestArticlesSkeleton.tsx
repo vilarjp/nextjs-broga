@@ -1,4 +1,4 @@
-import { generateIntArray } from "@/utils/generateIntArray";
+import { generateIntArray } from "@/utils";
 
 export const LatestArticlesSkeleton = async () => {
   return (
