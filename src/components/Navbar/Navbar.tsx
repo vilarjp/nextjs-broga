@@ -8,7 +8,7 @@ import {
   UserIcon,
 } from "@/components/Icons";
 
-import { NavbarList } from "./NavbarList";
+import { NavbarList } from "./NavBarList";
 import { NavbarListItemLink } from "./NavbarListItemLink";
 
 export const Navbar = () => {

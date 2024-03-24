@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { ComponentProps } from "react";
-import { NavbarListItem } from "./NavbarListItem";
+import { NavbarListItem } from "./NavBarListItem";
 
 export const NavbarListItemLink = ({
   href,

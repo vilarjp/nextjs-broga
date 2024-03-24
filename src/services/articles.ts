@@ -2,6 +2,9 @@ import Article from "@/libs/database/articles";
 
 const HIGHLIGHT_ARTICLES_COUNT = 4;
 
+const sleep = async () =>
+  new Promise((resolve) => setTimeout(resolve, Math.random() * 10000));
+
 export default {
   getHomeArticles: async ({ page = 1, limit = 10 } = {}) => {
     const offset = (page - 1) * limit + HIGHLIGHT_ARTICLES_COUNT;
@@ -25,6 +28,8 @@ export default {
     };
   },
   getHighlightArticles: async () => {
+    await sleep();
+
     const data = await Article.get({
       limit: HIGHLIGHT_ARTICLES_COUNT,
     });
