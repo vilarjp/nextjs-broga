@@ -18,4 +18,14 @@ export default {
       },
     };
   },
+  getRandomGames: async ({ limit = 10 } = {}) => {
+    const total = await Game.count({});
+    const offset = Math.max(0, Math.floor(Math.random() * total) - limit);
+    const data = await Game.get({ limit, offset });
+    const sorted = data.sort(() => (Math.random() > 0.5 ? 1 : -1));
+
+    return {
+      data: sorted,
+    };
+  },
 };

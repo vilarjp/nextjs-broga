@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const MAX_RECORDS = 30;
+const MAX_RECORDS = 50;
 const MIN_OFFSET = 0;
 
 export default {

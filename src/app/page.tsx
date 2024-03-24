@@ -1,8 +1,10 @@
 import Image from "next/image";
 
+import { Hero } from "@/components/Hero";
 import { PageWrapper } from "@/components/PageWrapper";
 import { Pagination } from "@/components/Pagination";
 import ArticlesService from "@/services/articles";
+import GamesService from "@/services/games";
 
 export default async function Home({
   searchParams,
@@ -17,14 +19,18 @@ export default async function Home({
       limit,
     });
   const { data: highlights } = await ArticlesService.getHighlightArticles();
+  const { data: randomGames } = await GamesService.getRandomGames({
+    limit: 40,
+  });
 
   return (
     <PageWrapper>
-      <div className="w-full h-[35vh] bg-orange-400 flex-center">
-        <p>algo chamativo</p>
-      </div>
-      <div className="container mx-auto my-6">
-        <div className="grid grid-cols-4 gap-4 h-[35vh]">
+      <Hero games={randomGames} />
+
+      <div className="container mx-auto my-10">
+        <h2 className="text-3xl my-6 underline">Latest Articles</h2>
+
+        <div className="grid grid-cols-4 gap-4 h-[42vh]">
           {highlights.splice(-4).map((article) => (
             <div
               key={article.id}
@@ -47,7 +53,9 @@ export default async function Home({
         </div>
       </div>
 
-      <div className="container mx-auto my-6">
+      <div className="container mx-auto my-10">
+        <h3 className="text-3xl my-6 underline">Articles</h3>
+
         <div className="grid grid-cols-12 gap-4">
           <div className="col-span-8">
             <div className="flex flex-col gap-4">
