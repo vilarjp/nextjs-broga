@@ -11,7 +11,7 @@ export const LatestArticles = async () => {
       <h2 className="text-3xl my-6 underline">Latest Articles</h2>
 
       <div className="grid grid-cols-4 gap-4 h-[42vh]">
-        {highlights.splice(-4).map((article) => (
+        {highlights.map((article) => (
           <Link
             key={article.id}
             href={`/articles/${article.slug}`}
