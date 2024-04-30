@@ -8,10 +8,16 @@ import {
   UserIcon,
 } from "@/components/Icons";
 
+import { SignOutForm } from "@/modules/auth/components/SignOutForm";
 import { NavbarList } from "./NavBarList";
+import { NavbarListItem } from "./NavBarListItem";
 import { NavbarListItemLink } from "./NavbarListItemLink";
 
-export const Navbar = () => {
+export const Navbar = ({
+  user,
+}: {
+  user: { name: string; email: string; id: string } | null;
+}) => {
   return (
     <nav className="fixed top-0 left-0 flex h-screen flex-col bg-slate-900 border-r border-indigo-400/20 hover:border-indigo-400/40 w-72 p-2 text-slate-300 transition duration-300">
       <div className="flex items-center justify-center my-4">
@@ -40,9 +46,14 @@ export const Navbar = () => {
         </NavbarListItemLink>
       </NavbarList>
       <NavbarList>
-        <NavbarListItemLink href="/user">
-          <UserIcon className="w-4 h-4" /> User
+        <NavbarListItemLink href={user ? "/user" : "/auth/sign-in"}>
+          <UserIcon className="w-4 h-4" /> {user ? user.name : "Login"}
         </NavbarListItemLink>
+        {user && (
+          <NavbarListItem>
+            <SignOutForm />
+          </NavbarListItem>
+        )}
       </NavbarList>
     </nav>
   );

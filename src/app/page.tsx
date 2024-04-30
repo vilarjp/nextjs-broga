@@ -3,14 +3,14 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 import { Hero } from "@/components/Hero";
+import { PageWrapper } from "@/components/PageWrapper";
+import { Pagination } from "@/components/Pagination";
 import {
   LatestArticles,
   LatestArticlesSkeleton,
-} from "@/components/LatestArticles";
-import { PageWrapper } from "@/components/PageWrapper";
-import { Pagination } from "@/components/Pagination";
-import ArticlesService from "@/services/articles";
-import GamesService from "@/services/games";
+} from "@/modules/articles/components/LatestArticles";
+import ArticlesService from "@/modules/articles/services/articles";
+import GamesService from "@/modules/games/services/games";
 
 export default async function Home({
   searchParams,

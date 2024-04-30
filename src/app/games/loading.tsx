@@ -1,5 +1,5 @@
 import { PageWrapper } from "@/components/PageWrapper";
-import { generateIntArray } from "@/utils";
+import { generateArray } from "@/utils/generateArrays";
 
 export default function GamesLoading() {
   return (
@@ -8,7 +8,7 @@ export default function GamesLoading() {
         <h1 className="text-3xl my-6">Games</h1>
 
         <div className="grid grid-cols-4 gap-x-4 gap-y-12">
-          {generateIntArray(12).map((_, index) => (
+          {generateArray(12).map((_, index) => (
             <div
               key={index}
               className="flex-center flex-col relative overflow-hidden animate-pulse"

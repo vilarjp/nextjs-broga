@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { classNameMerger } from "@/utils";
+import { classNameMerger } from "@/utils/classNameMerger";
 import { usePagination } from "./usePagination";
 
 export const Pagination = ({

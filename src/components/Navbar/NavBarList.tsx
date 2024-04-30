@@ -1,6 +1,6 @@
 import { ComponentProps } from "react";
 
-import { classNameMerger } from "@/utils";
+import { classNameMerger } from "@/utils/classNameMerger";
 
 export const NavbarList = ({
   children,

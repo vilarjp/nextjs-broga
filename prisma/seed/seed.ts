@@ -1,8 +1,15 @@
 import { PrismaClient } from "@prisma/client";
+import { convert } from "url-slug";
 
 import articles from "../../src/data/articles.json";
 import games from "../../src/data/games.json";
-import { slugify } from "../../src/utils";
+
+const slugify = (url: string) =>
+  convert(url, {
+    dictionary: {
+      "'": "",
+    },
+  });
 
 const prisma = new PrismaClient();
 

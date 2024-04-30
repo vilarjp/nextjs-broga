@@ -1,14 +1,14 @@
 import Image from "next/image";
 
 import { PageWrapper } from "@/components/PageWrapper";
-import GamesService from "@/services/games";
-import { generateGameImageUrl } from "@/utils";
+import GamesService from "@/modules/games/services/games";
+import { gameImageUrlMapper } from "@/modules/games/utils/image-url-mapper";
 
-export default async function GamePage({
-  params,
-}: {
+type GamePageProps = {
   params: { slug: string };
-}) {
+};
+
+export default async function Game({ params }: GamePageProps) {
   const { slug } = params;
   const game = await GamesService.getGameBySlug(slug);
 
@@ -21,7 +21,7 @@ export default async function GamePage({
           <h1 className="text-3xl my-6">{game.title}</h1>
           <Image
             className="my-6 h-full w-full object-cover rounded-lg"
-            src={generateGameImageUrl(game.image)}
+            src={gameImageUrlMapper(game.image)}
             alt={game.title}
             width={600}
             height={400}

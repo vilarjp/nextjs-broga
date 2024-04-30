@@ -3,14 +3,15 @@ import Link from "next/link";
 
 import { PageWrapper } from "@/components/PageWrapper";
 import { Pagination } from "@/components/Pagination";
-import GamesService from "@/services/games";
-import { generateGameImageUrl } from "@/utils";
+import GamesService from "@/modules/games/services/games";
+import { gameImageUrlMapper } from "@/modules/games/utils/image-url-mapper";
+import { gameUrlMapper } from "@/modules/games/utils/url-mapper";
 
-export default async function Games({
-  searchParams,
-}: {
+type GamesPageProps = {
   searchParams?: { page?: string; limit?: string };
-}) {
+};
+
+export default async function Games({ searchParams }: GamesPageProps) {
   const currentPage = Number(searchParams?.page) || 1;
   const limit = Number(searchParams?.limit) || 12;
   const { data: games, metadata: pagination } = await GamesService.getGames({
@@ -29,10 +30,10 @@ export default async function Games({
               key={game.id}
               className="flex-center flex-col relative overflow-hidden"
             >
-              <Link href={`/games/${game.slug}`} className="h-full w-full">
+              <Link href={gameUrlMapper(game.slug)} className="h-full w-full">
                 <Image
                   className="h-full w-full object-cover transition duration-500 hover:scale-105"
-                  src={`${generateGameImageUrl(game.image)}`}
+                  src={gameImageUrlMapper(game.image)}
                   alt={game.title}
                   width={600}
                   height={400}

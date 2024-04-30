@@ -1,91 +1,119 @@
 "use server";
 
-import UsersService from "@/services/users";
-import { User } from "@prisma/client";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import zod, { ZodError } from "zod";
 
-export type SignUpFormData = {
-  errors: {
-    name: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-  } | null;
-  createdUser: User | null;
+import UsersService from "@/modules/auth/services/users";
+import { createSession } from "@/modules/auth/utils/cookies";
+import { encryptJwt } from "@/modules/auth/utils/jwt";
+
+type ValidationErrors = {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
 };
 
-const validateSignUpForm = (formData: FormData) => {
-  const errors = {
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  };
+type SignUpFormData = {
+  errors?: ValidationErrors;
+  signUpError?: string;
+};
 
+export type SignUpFormProps = {
+  handleSignUpForm: (
+    _: SignUpFormData,
+    formData: FormData
+  ) => Promise<SignUpFormData>;
+};
+
+type ValidateSignUpForm = {
+  hasErrors: boolean;
+  errors?: ValidationErrors;
+};
+
+const userSchema = zod
+  .object({
+    name: zod.string().min(3, "Name must be at least 3 characters long"),
+    email: zod.string().email(),
+    password: zod
+      .string()
+      .min(8, "Password must be at least 8 characters long"),
+    confirmPassword: zod
+      .string()
+      .min(8, "Password must be at least 8 characters long"),
+  })
+  .refine((data) => data.name.trim().split(" ").length >= 2, {
+    message: "Last name is required",
+    path: ["name"],
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
+
+const validateSignUpForm = (formData: FormData): ValidateSignUpForm => {
   try {
-    const name = formData.get("name") as string;
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    const confirmPassword = formData.get("confirmPassword") as string;
+    userSchema.parse(Object.fromEntries(formData));
 
-    if (!name) errors.name = "Name is required";
-    if (!email) errors.email = "Email is required";
-    if (email && !email.includes("@")) errors.email = "Invalid email";
-    if (!password) errors.password = "Password is required";
-    if (password && password.length < 8)
-      errors.password = "Password must be at least 8 characters long";
-    if (!confirmPassword)
-      errors.confirmPassword = "Confirm Password is required";
-    if (password !== confirmPassword)
-      errors.confirmPassword = "Passwords do not match";
-
-    return errors;
-  } catch (error) {
     return {
-      name: "Invalid form data",
-      email: "Invalid form data",
-      password: "Invalid form data",
-      confirmPassword: "Invalid form data",
+      hasErrors: false,
+    };
+  } catch (error) {
+    const isZodError = error instanceof ZodError;
+
+    if (isZodError) {
+      const { fieldErrors } = error.flatten();
+
+      const errors = Object.keys(fieldErrors).reduce((error, key) => {
+        const errorMessage = fieldErrors[key]?.at(0);
+        return { ...error, [key]: errorMessage };
+      }, {} as ValidationErrors);
+
+      return {
+        hasErrors: true,
+        errors: { ...errors },
+      };
+    }
+
+    return {
+      hasErrors: true,
+      errors: {
+        name: "Unknown error, please check your data and try again",
+        email: "Unknown error, please check your data and try again",
+        password: "Unknown error, please check your data and try again",
+        confirmPassword: "Unknown error, please check your data and try again",
+      },
     };
   }
 };
 
 export const handleSignUpForm = async (
-  prevState: any,
+  _: SignUpFormData,
   formData: FormData
 ): Promise<SignUpFormData> => {
-  try {
-    const errors = validateSignUpForm(formData);
+  const { hasErrors, errors } = validateSignUpForm(formData);
 
-    if (Object.values(errors).some((error) => error))
-      return {
-        ...prevState,
-        errors,
-        createdUser: null,
-      };
-
-    const newUser = {
-      name: formData.get("name") as string,
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-    };
-
-    const createdUser = await UsersService.signUp(newUser);
-
+  if (hasErrors)
     return {
-      ...prevState,
-      errors: null,
-      createdUser,
+      errors,
     };
-  } catch (error) {
-    return {
-      ...prevState,
-      errors: {
-        name: "Error creating user",
-        email: "Error creating user",
-        password: "Error creating user",
-        confirmPassword: "Error creating user",
-      },
-      createdUser: null,
-    };
-  }
+
+  const newUser = {
+    name: formData.get("name") as string,
+    email: formData.get("email") as string,
+    password: formData.get("password") as string,
+  };
+
+  const { user, error } = await UsersService.signUp(newUser);
+
+  if (!user) return { signUpError: error };
+
+  const jwt = await encryptJwt(user);
+
+  createSession(jwt);
+
+  revalidatePath("/");
+
+  redirect("/");
 };

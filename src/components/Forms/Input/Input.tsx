@@ -1,4 +1,4 @@
-import { classNameMerger } from "@/utils";
+import { classNameMerger } from "@/utils/classNameMerger";
 import { ComponentProps } from "react";
 
 type InputProps = {

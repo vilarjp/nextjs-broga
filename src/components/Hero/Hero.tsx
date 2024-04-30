@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CSSProperties } from "react";
 
-import { generateGameImageUrl } from "@/utils";
+import { gameImageUrlMapper } from "@/modules/games/utils/image-url-mapper";
 
 type Games = {
   games: Array<{
@@ -29,7 +29,7 @@ const ScrollableGames = ({ games }: Games) => {
         >
           <Image
             className="h-full w-full object-cover brightness-75 hover:brightness-100 transition-all duration-300 ease-in-out"
-            src={generateGameImageUrl(game.image)}
+            src={gameImageUrlMapper(game.image)}
             alt={game.title}
             width={372}
             height={272}
